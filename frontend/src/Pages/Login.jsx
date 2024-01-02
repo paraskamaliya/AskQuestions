@@ -1,6 +1,274 @@
+import { motion } from "framer-motion";
+import { useState } from "react";
+import { styled } from "styled-components";
+import { IoPersonSharp } from "react-icons/io5";
+import { IconButton, Input, InputGroup, InputRightElement, Select, Spinner, useToast } from "@chakra-ui/react";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { useDispatch } from "react-redux";
+import { LOGIN } from "../Redux/AuthReducer/actionType";
+import { useNavigate } from "react-router-dom";
+
 const Login = () => {
-    return <div>
-        <h1>Login</h1>
-    </div>
+    const URL = "https://askquestions.onrender.com";
+    const toast = useToast();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const [signShow, setSignShow] = useState(false);
+
+    const [showPass, setShowPass] = useState(false);
+    const [load, setLoad] = useState(false);
+
+    const [loginEmail, setLoginEmail] = useState("")
+    const [loginPass, setLoginPass] = useState("")
+
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [conPassword, setConPassword] = useState("");
+    const [country, setCountry] = useState("");
+
+    const handleLogin = async () => {
+        const payload = {
+            email: loginEmail,
+            password: loginPass
+        }
+        if (loginEmail !== "" && loginPass !== "") {
+
+            try {
+                setLoad(true);
+                let res = await fetch(`${URL}/users/signin`, {
+                    method: "POST",
+                    headers: {
+                        "content-type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                })
+                if (res.status == 200) {
+                    toast({
+                        title: "Login Successfully",
+                        description: "You are logged in",
+                        duration: 3000,
+                        isClosable: true,
+                        status: "success"
+                    })
+                    let data = await res.json();
+                    dispatch({ type: LOGIN, payload: data })
+                    navigate("/")
+                }
+                else if (res.status == 202) {
+                    toast({
+                        title: "Wrong Credentials",
+                        description: "Data is not present, Please register",
+                        duration: 3000,
+                        isClosable: true,
+                        status: "error"
+                    })
+                } else {
+                    toast({
+                        title: "Something went wrong",
+                        description: "Something went wrong, Please try again",
+                        duration: 3000,
+                        isClosable: true,
+                        status: "error"
+                    })
+                }
+                setLoad(false);
+            } catch (error) {
+                setLoad(false);
+                toast({
+                    title: "Something went wrong",
+                    description: "Something went wrong, Please try again",
+                    duration: 3000,
+                    isClosable: true,
+                    status: "error"
+                })
+            }
+        }
+    }
+
+    const handleRegister = async () => {
+        const payload = {
+            email, username, password, conPassword, country
+        }
+        if (password == conPassword) {
+            try {
+                setLoad(true);
+                let res = await fetch(`${URL}/users/register`, {
+                    method: "POST",
+                    headers: {
+                        "content-type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                })
+                if (res.status == 200) {
+                    toast({
+                        title: "Successfully Registered",
+                        description: "You are successfully registered, Please login",
+                        duration: 3000,
+                        isClosable: true,
+                        status: "success"
+                    })
+                    signShow(prev => prev = false);
+                }
+                else if (res.status == 201) {
+                    toast({
+                        title: "You are Registered",
+                        description: "You are registered, Please Login",
+                        duration: 3000,
+                        isClosable: true,
+                        status: "info"
+                    })
+                }
+                else {
+                    toast({
+                        title: "Something went wrong",
+                        description: "Something went wrong, Please try again",
+                        duration: 3000,
+                        isClosable: true,
+                        status: "error"
+                    })
+                }
+                setLoad(false);
+            } catch (error) {
+                setLoad(false);
+                toast({
+                    title: "Something went wrong",
+                    description: "Something went wrong, Please try again",
+                    duration: 3000,
+                    isClosable: true,
+                    status: "error"
+                })
+            }
+        } else {
+            toast({
+                title: "Password Error",
+                description: "Password must be same with Confirm Password",
+                duration: 3000,
+                isClosable: true,
+                status: "info"
+            })
+        }
+    }
+
+    return <DIV>
+        <motion.div initial={{ y: "-100vw" }} animate={{ y: 0 }} style={{ width: "50%" }}>
+            {
+                signShow == false ?
+                    <div>
+                        <div className="cont" style={{
+                            width: "70%",
+                            borderRadius: "20px",
+                            backdropFilter: "blur(10px)",
+                            padding: "5%",
+                            background: "linear - gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0))",
+                            border: "1px solid rgba(255, 255, 255, 0.18)",
+                            boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.37)",
+                            WebkitBackdropFilter: "blur(10px)"
+                        }}>
+                            <h1 style={{ marginBottom: "3%" }}>Login</h1>
+                            <IoPersonSharp style={{ border: "1px solid black", borderRadius: "50%", padding: "13", margin: "auto", marginBottom: "5%" }} size={"6em"} />
+                            <Input type="email" placeholder="Enter Registered Email" borderColor={"black"} value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} focusBorderColor="#B79FEA" mb={"3%"} p={2} required />
+                            <InputGroup>
+                                <Input type={showPass ? "text" : "password"} placeholder="Enter Password" borderColor={"black"} focusBorderColor="#B79FEA" mb={"3%"} p={2} value={loginPass} onChange={(e) => setLoginPass(e.target.value)} required />
+                                <InputRightElement>
+                                    <IconButton size={"sm"} fontSize={"md"} icon={showPass ? <ViewOffIcon /> : <ViewIcon />} bg={"#B79FEA"} color={"white"} _hover={{ bg: "#B79FEA" }} onClick={() => setShowPass(!showPass)} />
+                                </InputRightElement>
+                            </InputGroup>
+                            <motion.button
+                                style={{
+                                    background: "linear-gradient(to right, #B79FEA, #6F7CDB)",
+                                    borderRadius: "40px",
+                                    border: "none",
+                                    fontSize: "1.5em",
+                                    padding: "3% 7.5% 3% 7.5%",
+                                    color: "white"
+                                }}
+                                whileHover={{
+                                    background: "linear-gradient(to right, #6F7CDB, #B79FEA)",
+                                    borderRadius: "10px",
+                                    transition: { duration: 0.5 },
+                                }}
+                                whileTap={{
+                                    scale: 0.8
+                                }}
+                                onClick={handleLogin}
+                            >
+                                {load ? <Spinner /> : "Login"}
+                            </motion.button>
+                            <p style={{ margin: "3%" }}>New User ? <span onClick={() => setSignShow(!signShow)} style={{ cursor: "pointer", color: "blue", textDecoration: "underline" }}>Register</span></p>
+                        </div>
+                    </div> : <div>
+                        <div className="cont" style={{
+                            width: "70%",
+                            borderRadius: "20px",
+                            backdropFilter: "blur(10px)",
+                            padding: "5%",
+                            background: "linear - gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0))",
+                            border: "1px solid rgba(255, 255, 255, 0.18)",
+                            boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.37)",
+                            WebkitBackdropFilter: "blur(10px)"
+                        }}>
+                            <h1 style={{ marginBottom: "3%" }}>SignUp</h1>
+                            <Input type="text" placeholder="Enter Username" borderColor={"black"} focusBorderColor="#B79FEA" mb={"3%"} p={2} value={username} onChange={(e) => setUsername(e.target.value)} />
+                            <Input type="email" placeholder="Enter Email" borderColor={"black"} focusBorderColor="#B79FEA" mb={"3%"} p={2} value={email} onChange={(e) => setEmail(e.target.value)} />
+                            <Select placeholder="Select Country" borderColor={"black"} focusBorderColor="#B79FEA" style={{ marginBottom: "3%" }} value={country} onChange={(e) => setCountry(e.target.value)}>
+                                <option value={"India"}>India</option>
+                                <option value={"China"}>China</option>
+                                <option value={"United States"}>United States</option>
+                                <option value={"Indonesia"}>Indonesia</option>
+                                <option value={"Pakistan"}>Pakistan</option>
+                                <option value={"Brazil"}>Brazil</option>
+                                <option value={"Nigeria"}>Nigeria</option>
+                                <option value={"United Kingdom"}>United Kingdom</option>
+                                <option value={"Bangladesh"}>Bangladesh</option>
+                                <option value={"Russia"}>Russia</option>
+                                <option value={"Mexico"}>Mexico</option>
+                            </Select>
+                            <Input type="password" placeholder="Enter Password" borderColor={"black"} focusBorderColor="#B79FEA" mb={"3%"} p={2} value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <Input type="text" placeholder="Enter Confirm Password" borderColor={"black"} value={conPassword} onChange={(e) => setConPassword(e.target.value)} focusBorderColor="#B79FEA" mb={"3%"} p={2} />
+                            <motion.button
+                                style={{
+                                    background: "linear-gradient(to right, #B79FEA, #6F7CDB)",
+                                    borderRadius: "40px",
+                                    border: "none",
+                                    fontSize: "1.5em",
+                                    padding: "3% 7.5% 3% 7.5%",
+                                    color: "white"
+                                }}
+                                whileHover={{
+                                    background: "linear-gradient(to left, #6F7CDB, #B79FEA)",
+                                    borderRadius: "10px",
+                                    transition: { duration: 0.5 },
+                                }}
+                                whileTap={{
+                                    scale: 0.8
+                                }}
+                                onClick={handleRegister}
+                            >{load ? <Spinner /> : "Register"}</motion.button>
+                            <p style={{ margin: "3%" }}>Already Register ? <span onClick={() => setSignShow(!signShow)} style={{ cursor: "pointer", color: "blue", textDecoration: "underline" }}>Login</span></p>
+                        </div>
+                    </div>
+            }
+        </motion.div>
+    </DIV >
 }
 export default Login;
+const DIV = styled.div`
+    padding: 1%;
+    height: 90vh;
+    background: linear-gradient(to bottom, white, #B79FEA);
+    justify-content: center;
+    transition: all 0.5s;
+    align-items: center;
+    div{
+        margin: auto;
+        text-align: center;
+    }
+    div h1{
+        font-size: xx-large;
+        font-weight: 500;
+        margin-bottom: 2%;
+    }
+    
+`
