@@ -4,7 +4,7 @@ const { auth } = require("../Middlewares/auth.middleware");
 const postRouter = express.Router();
 
 postRouter.get("/", async (req, res) => {
-    const { type, order } = req.query;
+    const { type, order, page, limit } = req.query;
     try {
         let posts = await PostModel.find();
         if (type) {
@@ -21,6 +21,9 @@ postRouter.get("/", async (req, res) => {
                     return b.upvotes - a.upvotes
                 })
             }
+        }
+        if (page && limit) {
+            posts = await PostModel.find().skip((page - 1) * limit).limit(limit);
         }
         res.status(200).send(posts);
     } catch (error) {
