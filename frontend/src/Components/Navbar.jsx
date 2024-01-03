@@ -7,7 +7,7 @@ import { ChevronDownIcon } from "@chakra-ui/icons"
 
 const Navbar = () => {
     const auth = useSelector(store => store.AuthReducer);
-    return <motion.div initial={{ y: -250 }} animate={{ y: 0 }} style={{ height: "10vh" }}>
+    return <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ height: "10vh", background: "#c7f8d6" }} transition={{ when: "beforeChildren", staggerChildren: 1 }}>
         <div style={{ width: "95%", margin: "auto", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1%", height: "100%" }}>
             <motion.div>
                 <Link to={"/"}>

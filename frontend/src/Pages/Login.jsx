@@ -150,9 +150,19 @@ const Login = () => {
             })
         }
     }
-
+    const buttonVariant = {
+        hover: {
+            background: "linear-gradient(to right, #6F7CDB, #B79FEA)",
+            borderRadius: "10px",
+            textShadow: "0px 0px 5px white",
+            transition: { duration: 0.3, yoyo: Infinity }
+        },
+        tap: {
+            scale: 0.8
+        }
+    }
     return <DIV>
-        <motion.div initial={{ y: "-100vw" }} animate={{ y: 0 }} style={{ width: "50%" }}>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ width: "50%" }} transition={{ delay: 0.5 }}>
             {
                 signShow == false ?
                     <div>
@@ -184,14 +194,9 @@ const Login = () => {
                                     padding: "3% 7.5% 3% 7.5%",
                                     color: "white"
                                 }}
-                                whileHover={{
-                                    background: "linear-gradient(to right, #6F7CDB, #B79FEA)",
-                                    borderRadius: "10px",
-                                    transition: { duration: 0.5 },
-                                }}
-                                whileTap={{
-                                    scale: 0.8
-                                }}
+                                variants={buttonVariant}
+                                whileHover="hover"
+                                whileTap="tap"
                                 onClick={handleLogin}
                             >
                                 {load ? <Spinner /> : "Login"}
@@ -236,14 +241,9 @@ const Login = () => {
                                     padding: "3% 7.5% 3% 7.5%",
                                     color: "white"
                                 }}
-                                whileHover={{
-                                    background: "linear-gradient(to left, #6F7CDB, #B79FEA)",
-                                    borderRadius: "10px",
-                                    transition: { duration: 0.5 },
-                                }}
-                                whileTap={{
-                                    scale: 0.8
-                                }}
+                                variants={buttonVariant}
+                                whileHover="hover"
+                                whileTap="tap"
                                 onClick={handleRegister}
                             >{load ? <Spinner /> : "Register"}</motion.button>
                             <p style={{ margin: "3%" }}>Already Register ? <span onClick={() => setSignShow(!signShow)} style={{ cursor: "pointer", color: "blue", textDecoration: "underline" }}>Login</span></p>
