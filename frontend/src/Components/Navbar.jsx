@@ -7,7 +7,7 @@ import { ChevronDownIcon } from "@chakra-ui/icons"
 
 const Navbar = () => {
     const auth = useSelector(store => store.AuthReducer);
-    return <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ height: "10vh", background: "#c7f8d6" }} transition={{ when: "beforeChildren", staggerChildren: 1 }}>
+    return <div style={{ height: "10vh", borderBottom: "1px solid black", background: "rgba(100, 150, 190, 0.3)" }} >
         <div style={{ width: "95%", margin: "auto", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1%", height: "100%" }}>
             <motion.div>
                 <Link to={"/"}>
@@ -26,14 +26,20 @@ const Navbar = () => {
                             <Avatar src={`https://bit.ly/${auth.user.username}`} name={auth.user.username} />
                         </MenuButton>
                         <MenuList>
-                            <MenuItem>item</MenuItem>
-                            <MenuItem>item</MenuItem>
-                            <MenuItem>item</MenuItem>
+                            <MenuItem>
+                                <Link to={"#"} style={{ width: "100%" }}>My Questions</Link>
+                            </MenuItem>
+                            <MenuItem>
+                                <Link to={"#"} style={{ width: "100%" }}>My Profile</Link>
+                            </MenuItem>
+                            <MenuItem>
+                                <button>LOGOUT</button>
+                            </MenuItem>
                         </MenuList>
                     </Menu>
                 }
             </motion.div>
         </div >
-    </motion.div >
+    </div>
 }
 export default Navbar;

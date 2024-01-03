@@ -109,36 +109,11 @@ const Login = () => {
                         isClosable: true,
                         status: "success"
                     })
-                    signShow(prev => prev = false);
-                }
-                else if (res.status == 201) {
-                    toast({
-                        title: "You are Registered",
-                        description: "You are registered, Please Login",
-                        duration: 3000,
-                        isClosable: true,
-                        status: "info"
-                    })
-                }
-                else {
-                    toast({
-                        title: "Something went wrong",
-                        description: "Something went wrong, Please try again",
-                        duration: 3000,
-                        isClosable: true,
-                        status: "error"
-                    })
+                    signShow((prev) => prev = false);
                 }
                 setLoad(false);
             } catch (error) {
                 setLoad(false);
-                toast({
-                    title: "Something went wrong",
-                    description: "Something went wrong, Please try again",
-                    duration: 3000,
-                    isClosable: true,
-                    status: "error"
-                })
             }
         } else {
             toast({
@@ -257,7 +232,7 @@ export default Login;
 const DIV = styled.div`
     padding: 1%;
     height: 90vh;
-    background: linear-gradient(to bottom, white, #B79FEA);
+    background: linear-gradient(to bottom, white, #a984fa);
     justify-content: center;
     transition: all 0.5s;
     align-items: center;
