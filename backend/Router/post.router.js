@@ -14,14 +14,10 @@ postRouter.get("/", async (req, res) => {
         }
         if (order) {
             if (order == "asc") {
-                posts.sort((a, b) => {
-                    return a.upvotes - b.upvotes
-                })
+                posts.sort((a, b) => a.upvotes - b.upvotes)
             }
             else {
-                posts.sort((a, b) => {
-                    return b.upvotes - a.upvotes
-                })
+                posts.sort((a, b) => b.upvotes - a.upvotes)
             }
         }
         if (page && limit) {

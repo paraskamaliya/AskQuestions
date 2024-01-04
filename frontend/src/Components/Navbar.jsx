@@ -23,7 +23,7 @@ const Navbar = () => {
                     </Link> :
                     <Menu>
                         <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} rightIcon={<ChevronDownIcon fontSize={"2xl"} />}>
-                            <Avatar src={`https://bit.ly/${auth.user.username}`} name={auth.user.username} />
+                            <Avatar src={`https://bit.ly/broken-link`} name={auth.user.username} />
                         </MenuButton>
                         <MenuList>
                             <MenuItem>

@@ -9,20 +9,21 @@ import { AiTwotoneLike } from "react-icons/ai";
 
 const Home = () => {
     const URL = "https://askquestions.onrender.com";
+    const limit = 2;
     const auth = useSelector(store => store.AuthReducer);
 
     const [postData, setPostData] = useState([]);
     const [load, setLoad] = useState(false);
-    const [totalPosts, setTotalPosts] = useState(0);
+    const [totalPage, setTotalPage] = useState(0);
 
     const [page, setPage] = useState(1);
     const [type, setType] = useState("");
     const [order, setOrder] = useState("");
-    console.log(totalPosts);
+
     const fetchTheData = async () => {
         setLoad(true)
         try {
-            let url = `${URL}/posts?page=${page}&limit=10`
+            let url = `${URL}/posts?page=${page}&limit=${limit}`
             if (order !== "") {
                 url += `&order=${order}`
             }
@@ -34,7 +35,7 @@ const Home = () => {
             })
             let data = await res.json();
             setPostData(data.posts);
-            setTotalPosts(data.totalPosts);
+            setTotalPage(Math.ceil(data.totalPosts / limit))
         } catch (error) {
             console.log(error);
         } finally {
@@ -43,7 +44,7 @@ const Home = () => {
     }
 
     const handleUpvote = async (data) => {
-        data = { ...data, upvotes: data.upvotes++ };
+        data = { ...data, upvotes: data.upvotes + 1 };
         try {
             let res = await fetch(`${URL}/posts/update/${data._id}`, {
                 method: "PATCH",
@@ -54,10 +55,11 @@ const Home = () => {
                 body: JSON.stringify(data)
             })
             if (res.status === 200) {
-                let newData = postData.filter((el) => {
-                    return el._id === data._id ? data : el
+                let updated = await res.json();
+                let newData = postData.map((el) => {
+                    return el._id === data._id ? updated.postData : el
                 })
-                setPostData(prev => prev = newData);
+                setPostData((prev) => prev = newData);
             }
         } catch (error) {
             console.log(error);
@@ -66,7 +68,7 @@ const Home = () => {
 
     useEffect(() => {
         fetchTheData();
-    }, [type, order])
+    }, [type, order, page])
     if (load) {
         return <motion.div style={{ height: "90vh", display: "flex", alignItems: "center", justifyContent: "center", background: "rgb(200, 180, 240)" }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <Image src={loading} w={["15vw", "15vw", "10vw", "10vw", "5vw"]} marginBottom={"10vh"} />
@@ -111,15 +113,24 @@ const Home = () => {
                             <h1 style={{ fontSize: "larger" }}>Upvotes :- {el.upvotes}</h1>
                         </Link>
                         <div style={{ display: "flex", justifyContent: "right", alignItems: "center", gap: "2%" }}>
-                            {auth.isAuth && <motion.button style={{ fontSize: "larger", fontWeight: 500, padding: "1% 2.5% 1% 2.5%", background: "#F39C12", borderRadius: "15px", display: "flex", alignItems: "center", gap: "3%" }} whileHover={{ background: "#eec179", transition: { duration: 0.5 } }} whileTap={{ background: "#F39C12" }} onClick={() => handleUpvote(el)}>Upvote <AiTwotoneLike size={"1.5em"} /></motion.button>}
+                            {auth.isAuth && <motion.button style={{ fontSize: "larger", fontWeight: 500, padding: "1% 2.5% 1% 2.5%", background: "rgb(186, 153, 250)", borderRadius: "15px", display: "flex", alignItems: "center", gap: "3%" }} whileHover={{ background: "rgb(200, 180, 240)", transition: { duration: 0.5 } }} whileTap={{ background: "rgb(186, 153, 250)" }} onClick={() => handleUpvote(el)}>Upvote <AiTwotoneLike size={"1.5em"} /></motion.button>}
                             <p style={{ textAlign: "right", fontWeight: 300 }} >Posted at :- {el.date}</p>
                         </div>
                     </motion.div>
                 })}
             </Box>
             }
+            <div style={{ display: "flex", justifyContent: "center", padding: "2%", width: "90%", margin: "auto", gap: "1vw" }}>
+                {
+                    totalPage !== 0 && new Array(totalPage).fill().map((_, i) => {
+                        return <motion.button style={{
+                            padding: "0.5% 1% 0.5% 1%", background: "white", borderRadius: "10px", boxShadow: page == i + 1 && "2px 2px 2px #5c5757FF"
+                        }} whileHover={{ boxShadow: "2px 2px 2px #5c5757FF" }} onClick={() => setPage((prev) => prev = i + 1)}>{i + 1}</motion.button>
+                    })
+                }
+            </div>
         </motion.div>
-    </DIV>
+    </DIV >
 }
 export default Home;
 const DIV = styled.div`
