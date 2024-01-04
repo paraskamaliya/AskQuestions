@@ -7,8 +7,10 @@ postRouter.get("/", async (req, res) => {
     const { type, order, page, limit } = req.query;
     try {
         let posts = await PostModel.find();
+        let totalPosts = posts.length;
         if (type) {
             posts = await PostModel.find({ type })
+            totalPosts = posts.length;
         }
         if (order) {
             if (order == "asc") {
@@ -25,7 +27,7 @@ postRouter.get("/", async (req, res) => {
         if (page && limit) {
             posts = await PostModel.find().skip((page - 1) * limit).limit(limit);
         }
-        res.status(200).send(posts);
+        res.status(200).send({ posts, totalPosts });
     } catch (error) {
         res.status(400).send({ "msg": "Something went wrong", "err": error })
     }
