@@ -103,7 +103,7 @@ const Home = () => {
                     return <motion.div style={{ margin: "2%", borderRadius: "25px", padding: "2%", color: "black", background: "#ffffffb5" }} key={el._id} whileHover={{ borderRadius: "0px", cursor: "pointer", boxShadow: "2px 2px 4px black", transition: { duration: 0.5 } }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
                         <Link to={`/question/${el._id}`}>
                             <div style={{ display: "flex", alignItems: "center", gap: "4%" }}>
-                                <Avatar src={`https://bit.ly/${el.username}`} name={el.username} />
+                                <Avatar src={`https://bit.ly/`} name={el.username} />
                                 <p style={{ fontSize: "larger", fontWeight: 500 }}>{el.username}</p>
                             </div>
                             <div style={{ marginTop: "2%", marginBottom: "2%", border: "0.5px solid black" }} ></div>
@@ -126,7 +126,7 @@ const Home = () => {
                     totalPage !== 0 && new Array(totalPage).fill().map((_, i) => {
                         return <motion.button style={{
                             padding: "0.5% 1% 0.5% 1%", background: "white", borderRadius: "10px", boxShadow: page == i + 1 && "2px 2px 2px #5c5757FF"
-                        }} onClick={() => setPage(i + 1)} transition={{ duration: 0.5 }}>{i + 1}</motion.button>
+                        }} onClick={() => setPage(i + 1)} transition={{ duration: 0.5 }} key={i}>{i + 1}</motion.button>
                     })
                 }
             </div>

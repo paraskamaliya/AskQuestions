@@ -6,30 +6,27 @@ const postRouter = express.Router();
 postRouter.get("/", async (req, res) => {
     const { type, order, page, limit } = req.query;
     try {
-        let posts = await PostModel.find();
-        let totalPosts = posts.length;
+        let query = {};
         if (type) {
-            posts = await PostModel.find({ type })
-            totalPosts = posts.length;
+            query.type = type;
         }
+        const totalPosts = await PostModel.countDocuments(query);
+        let posts = await PostModel.find(query).skip((page - 1) * limit).limit(parseInt(limit));
         if (order) {
             if (order == "asc") {
-                posts.sort((a, b) => a.upvotes - b.upvotes)
+                posts.sort((a, b) => a.upvotes - b.upvotes);
             }
             else {
-                posts.sort((a, b) => b.upvotes - a.upvotes)
+                posts.sort((a, b) => b.upvotes - a.upvotes);
             }
-        }
-        if (page && limit) {
-            const startIndex = (page - 1) * limit;
-            const endIndex = startIndex + limit;
-            posts = posts.slice(startIndex, endIndex);
         }
         res.status(200).send({ posts, totalPosts });
     } catch (error) {
-        res.status(400).send({ "msg": "Something went wrong", "err": error })
+        res.status(400).send({ msg: "Something went wrong", err: error });
     }
-})
+});
+
+
 
 postRouter.get("/user", auth, async (req, res) => {
     try {
@@ -73,8 +70,9 @@ postRouter.delete("/delete/:id", auth, async (req, res) => {
 
 postRouter.patch("/update/:id", auth, async (req, res) => {
     const { id } = req.params;
+    const { upvotes, comments } = req.body;
     try {
-        await PostModel.findByIdAndUpdate({ _id: id }, req.body);
+        await PostModel.findByIdAndUpdate({ _id: id }, { upvotes, comments });
         const post = await PostModel.findOne({ _id: id })
         res.status(200).send({ "msg": "Post updated successfully", postData: post })
     } catch (error) {
