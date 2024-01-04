@@ -25,7 +25,9 @@ postRouter.get("/", async (req, res) => {
             }
         }
         if (page && limit) {
-            posts = await PostModel.find().skip((page - 1) * limit).limit(limit);
+            const startIndex = (page - 1) * limit;
+            const endIndex = startIndex + limit;
+            posts = posts.slice(startIndex, endIndex);
         }
         res.status(200).send({ posts, totalPosts });
     } catch (error) {

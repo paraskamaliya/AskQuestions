@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Avatar, Box, Image, Spinner } from "@chakra-ui/react";
+import { Avatar, Box, Image, Select } from "@chakra-ui/react";
 import loading from "../Images/loader.gif";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -13,17 +13,28 @@ const Home = () => {
 
     const [postData, setPostData] = useState([]);
     const [load, setLoad] = useState(false);
+    const [totalPosts, setTotalPosts] = useState(0);
 
-    console.log(postData);
-
+    const [page, setPage] = useState(1);
+    const [type, setType] = useState("");
+    const [order, setOrder] = useState("");
+    console.log(totalPosts);
     const fetchTheData = async () => {
         setLoad(true)
         try {
-            let res = await fetch(`${URL}/posts`, {
+            let url = `${URL}/posts?page=${page}&limit=10`
+            if (order !== "") {
+                url += `&order=${order}`
+            }
+            if (type !== "") {
+                url += `&type=${type}`
+            }
+            let res = await fetch(url, {
                 method: "GET"
             })
             let data = await res.json();
-            setPostData(data);
+            setPostData(data.posts);
+            setTotalPosts(data.totalPosts);
         } catch (error) {
             console.log(error);
         } finally {
@@ -42,9 +53,9 @@ const Home = () => {
                 },
                 body: JSON.stringify(data)
             })
-            if (res.status == 200) {
+            if (res.status === 200) {
                 let newData = postData.filter((el) => {
-                    return el._id == data._id ? data : el
+                    return el._id === data._id ? data : el
                 })
                 setPostData(prev => prev = newData);
             }
@@ -55,7 +66,7 @@ const Home = () => {
 
     useEffect(() => {
         fetchTheData();
-    }, [])
+    }, [type, order])
     if (load) {
         return <motion.div style={{ height: "90vh", display: "flex", alignItems: "center", justifyContent: "center", background: "rgb(200, 180, 240)" }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <Image src={loading} w={["15vw", "15vw", "10vw", "10vw", "5vw"]} marginBottom={"10vh"} />
@@ -64,7 +75,23 @@ const Home = () => {
 
     return <DIV>
         <motion.div style={{ width: "90%", margin: "auto", paddingTop: "1%" }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
-            <motion.h1 style={{ fontSize: "2.5em", fontWeight: 500, color: "black", textAlign: "center" }} initial={{ borderBottom: "0" }} animate={{ borderBottom: "1px solid black" }} >Recent Posts</motion.h1>
+            <motion.div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }} initial={{ borderBottom: "0" }} animate={{ borderBottom: "1px solid black" }}>
+                <motion.h1 style={{ fontSize: "2.5em", fontWeight: 500, color: "black" }} >Recent Posts</motion.h1>
+                <div style={{ display: "flex", gap: "1vw" }}>
+                    <Select placeholder="Select Type for Filter" bgColor={"white"} borderColor={"black"} focusBorderColor="black" value={type} onChange={(e) => setType(e.target.value)}>
+                        <option value="Tech">Tech</option>
+                        <option value="Environmental">Environmental</option>
+                        <option value="Language">Language</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Commerce">Commerce</option>
+                        <option value="General">General</option>
+                    </Select>
+                    <Select value={order} onChange={(e) => setOrder(e.target.value)} placeholder="Select order for Sort" bgColor={"white"} borderColor={"black"} focusBorderColor="black">
+                        <option value={"asc"}>Ascending</option>
+                        <option value={"desc"}>Descending</option>
+                    </Select>
+                </div>
+            </motion.div>
             <Box display={"grid"} gridTemplateColumns={["repeat(1,1fr)", "repeat(1,1fr)", "repeat(2,1fr)", "repeat(2,1fr)", "repeat(2,1fr)"]} >
                 {postData.length > 0 && postData.map((el) => (
                     <motion.div style={{ margin: "2%", borderRadius: "25px", padding: "2%", color: "black", background: "#ffffffb5" }} key={el._id} whileHover={{ borderRadius: "0px", cursor: "pointer", boxShadow: "2px 2px 4px black", transition: { duration: 0.5 } }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
