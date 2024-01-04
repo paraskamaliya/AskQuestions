@@ -51,6 +51,16 @@ postRouter.post("/add", auth, async (req, res) => {
     }
 })
 
+postRouter.get("/:id", auth, async (req, res) => {
+    const { id } = req.params;
+    try {
+        let post = await PostModel.findOne({ _id: id });
+        res.status(200).send(post)
+    } catch (error) {
+        res.status(400).send({ "msg": "Something went wrong", "err": error })
+    }
+})
+
 postRouter.delete("/delete/:id", auth, async (req, res) => {
     const { id } = req.params;
     try {

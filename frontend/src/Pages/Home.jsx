@@ -4,17 +4,18 @@ import { useEffect, useState } from "react";
 import { Avatar, Box, Image, Select } from "@chakra-ui/react";
 import loading from "../Images/loader.gif";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { AiTwotoneLike } from "react-icons/ai";
 
 const Home = () => {
     const URL = "https://askquestions.onrender.com";
-    const limit = 2;
+    const limit = 10;
     const auth = useSelector(store => store.AuthReducer);
 
     const [postData, setPostData] = useState([]);
     const [load, setLoad] = useState(false);
     const [totalPage, setTotalPage] = useState(0);
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const [page, setPage] = useState(1);
     const [type, setType] = useState("");
@@ -125,7 +126,7 @@ const Home = () => {
                     totalPage !== 0 && new Array(totalPage).fill().map((_, i) => {
                         return <motion.button style={{
                             padding: "0.5% 1% 0.5% 1%", background: "white", borderRadius: "10px", boxShadow: page == i + 1 && "2px 2px 2px #5c5757FF"
-                        }} whileHover={{ boxShadow: "2px 2px 2px #5c5757FF" }} onClick={() => setPage((prev) => prev = i + 1)}>{i + 1}</motion.button>
+                        }} onClick={() => setPage(i + 1)} transition={{ duration: 0.5 }}>{i + 1}</motion.button>
                     })
                 }
             </div>
