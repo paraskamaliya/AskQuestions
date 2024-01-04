@@ -92,9 +92,12 @@ const Home = () => {
                     </Select>
                 </div>
             </motion.div>
-            <Box display={"grid"} gridTemplateColumns={["repeat(1,1fr)", "repeat(1,1fr)", "repeat(2,1fr)", "repeat(2,1fr)", "repeat(2,1fr)"]} >
-                {postData.length > 0 && postData.map((el) => (
-                    <motion.div style={{ margin: "2%", borderRadius: "25px", padding: "2%", color: "black", background: "#ffffffb5" }} key={el._id} whileHover={{ borderRadius: "0px", cursor: "pointer", boxShadow: "2px 2px 4px black", transition: { duration: 0.5 } }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+            {postData.length == 0 && <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "81vh" }}>
+                <motion.h1 style={{ color: "red", fontSize: "2rem" }} initial={{ x: "-100vw" }} animate={{ x: 0 }} transition={{ type: "spring", damping: 30 }}>No data is Present</motion.h1>
+            </div>}
+            {postData.length > 0 && <Box display={"grid"} gridTemplateColumns={["repeat(1,1fr)", "repeat(1,1fr)", "repeat(2,1fr)", "repeat(2,1fr)", "repeat(2,1fr)"]} >
+                {postData?.map((el) => {
+                    return <motion.div style={{ margin: "2%", borderRadius: "25px", padding: "2%", color: "black", background: "#ffffffb5" }} key={el._id} whileHover={{ borderRadius: "0px", cursor: "pointer", boxShadow: "2px 2px 4px black", transition: { duration: 0.5 } }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
                         <Link to={`/question/${el._id}`}>
                             <div style={{ display: "flex", alignItems: "center", gap: "4%" }}>
                                 <Avatar src={`https://bit.ly/${el.username}`} name={el.username} />
@@ -112,8 +115,9 @@ const Home = () => {
                             <p style={{ textAlign: "right", fontWeight: 300 }} >Posted at :- {el.date}</p>
                         </div>
                     </motion.div>
-                ))}
+                })}
             </Box>
+            }
         </motion.div>
     </DIV>
 }

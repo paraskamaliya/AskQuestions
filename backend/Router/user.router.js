@@ -3,7 +3,8 @@ const userRouter = express.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
 const { UserModel } = require("../Model/user.model");
-const { auth } = require('../Middlewares/auth.middleware')
+const { auth } = require('../Middlewares/auth.middleware');
+const { ListModel } = require("../Model/list.model");
 userRouter.post("/register", async (req, res) => {
     const { username, email, password, city } = req.body;
     const user = await UserModel.findOne({ email })
@@ -60,13 +61,24 @@ userRouter.patch("/update/:id", auth, async (req, res) => {
     }
 })
 
-userRouter.delete("/update/:id", auth, async (req, res) => {
+userRouter.delete("/delete/:id", auth, async (req, res) => {
     const { id } = req.params;
     try {
         await UserModel.findByIdAndUpdate({ id }, req.body);
         res.status(200).send({ "message": "User data Deleted" })
     } catch (error) {
         res.status(400).send({ "message": "Something went wrong", "err": error })
+    }
+})
+
+userRouter.get("/logout", async (req, res) => {
+    const token = req.headers.authorization?.split(" ")[1];
+    try {
+        let tkn = new ListModel({ token })
+        await tkn.save();
+        res.status(200).send({ "msg": "You are successfully logged out" })
+    } catch (error) {
+        res.status(400).send({ "msg": "Something went wrong", "err": error })
     }
 })
 

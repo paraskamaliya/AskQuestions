@@ -130,7 +130,7 @@ const Login = () => {
             background: "linear-gradient(to right, #6F7CDB, #B79FEA)",
             borderRadius: "10px",
             textShadow: "0px 0px 5px white",
-            transition: { duration: 0.3, yoyo: Infinity }
+            transition: { duration: 0.5 }
         },
         tap: {
             scale: 0.8

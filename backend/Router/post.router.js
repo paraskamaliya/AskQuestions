@@ -69,7 +69,8 @@ postRouter.patch("/update/:id", auth, async (req, res) => {
     const { id } = req.params;
     try {
         await PostModel.findByIdAndUpdate({ _id: id }, req.body);
-        res.status(200).send({ "msg": "Post updated successfully" })
+        const post = await PostModel.findOne({ _id: id })
+        res.status(200).send({ "msg": "Post updated successfully", postData: post })
     } catch (error) {
         res.status(400).send({ "msg": "Something went wrong", "err": error })
     }
