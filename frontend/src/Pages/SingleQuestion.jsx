@@ -15,8 +15,7 @@ const SingleQuestion = () => {
     const [simData, setSimData] = useState([]);
     const [load, setLoad] = useState(false);
     const [comment, setComment] = useState("");
-    const [type, setType] = useState("");
-    console.log(simData);
+
     const fetchTheData = async () => {
         setLoad(true)
         try {

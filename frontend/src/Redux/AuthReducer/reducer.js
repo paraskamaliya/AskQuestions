@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT } from "./actionType"
+import { LOGIN, LOGOUT, PATCH } from "./actionType"
 const initState = {
     isAuth: false,
     token: "",
@@ -10,7 +10,10 @@ export const AuthReducer = (state = initState, { type, payload }) => {
             return { ...state, isAuth: true, token: payload.token, user: payload.userDetails }
         }
         case LOGOUT: {
-            return { ...state, isAuth: false, token: "", userDetails: {} }
+            return { ...state, isAuth: false, token: "", user: {} }
+        }
+        case PATCH: {
+            return { ...state, user: payload }
         }
         default: {
             return state

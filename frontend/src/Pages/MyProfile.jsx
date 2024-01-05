@@ -1,12 +1,15 @@
-import { Button, Input, Select } from "@chakra-ui/react";
+import { Button, Input, Select, useToast } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { PATCH } from "../Redux/AuthReducer/actionType";
 const MyProfile = () => {
     const URL = "https://askquestions.onrender.com";
     const auth = useSelector(store => store.AuthReducer);
-    const [userData, setUserData] = useState({});
+    const [userData, setUserData] = useState(auth.user);
     const [edit, setEdit] = useState(true);
+    const dispatch = useDispatch();
+    const toast = useToast();
 
     const handleUpdate = async () => {
         try {
@@ -18,8 +21,24 @@ const MyProfile = () => {
                 },
                 body: JSON.stringify(userData)
             })
+            if (res.status === 200) {
+                dispatch({ type: PATCH, payload: userData })
+                toast({
+                    title: "User data is Updated",
+                    description: "Your profile data is updated",
+                    duration: 3000,
+                    isClosable: true,
+                    status: "success"
+                })
+            }
         } catch (error) {
-            console.log(error);
+            toast({
+                title: "Something went wrong",
+                description: "Something went wrong, Please try again",
+                duration: 3000,
+                isClosable: true,
+                status: "error"
+            })
         }
     }
     useEffect(() => {
@@ -31,7 +50,7 @@ const MyProfile = () => {
         <motion.div style={{ width: "50%", margin: "auto", justifyContent: "center", textAlign: "center" }} initial={{ x: "100vw" }} animate={{ x: 0 }} transition={{ delay: 0.3 }} >
             <Input value={userData.username} onChange={(e) => setUserData({ ...userData, username: e.target.value })} placeholder="Enter Username" borderColor={"black"} focusBorderColor="black" m={1} isReadOnly={edit} />
             <Input value={userData.email} borderColor={"black"} focusBorderColor="black" m={1} isReadOnly />
-            <Select value={userData.country || ""} onChange={(e) => setUserData({ ...userData, country: e.target.value })} placeholder="Select Country" borderColor={"black"} focusBorderColor="black" m={1} isReadOnly={edit}>
+            <Select value={userData.country} onChange={(e) => setUserData({ ...userData, country: e.target.value })} placeholder="Select Country" borderColor={"black"} focusBorderColor="black" m={1} disabled={edit}>
                 <option value={"India"}>India</option>
                 <option value={"China"}>China</option>
                 <option value={"United States"}>United States</option>
@@ -45,7 +64,7 @@ const MyProfile = () => {
                 <option value={"Mexico"}>Mexico</option>
             </Select>
             <Button colorScheme="purple" onClick={() => setEdit((prev) => !prev)}>{edit ? "Edit" : "Cancel"}</Button>
-            {!edit && <Button colorScheme="green" onClick={handleUpdate}>Update</Button>}
+            {!edit && <Button colorScheme="green" onClick={handleUpdate} ml={2}>Update</Button>}
         </motion.div>
     </div>
 }

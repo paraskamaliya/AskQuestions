@@ -20,7 +20,7 @@ const Navbar = () => {
                     "content-type": "application/json"
                 }
             })
-            if (res.status == 200) {
+            if (res.status === 200) {
                 dispatch({ type: LOGOUT })
                 toast({
                     title: "Logout Successfully",
@@ -37,12 +37,12 @@ const Navbar = () => {
     return <div style={{ height: "10vh", borderBottom: "1px solid black", background: "rgba(100, 150, 190, 0.3)" }} >
         <div style={{ width: "95%", margin: "auto", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1%", height: "100%" }}>
             <motion.div>
-                <Link to={"/"}>
-                    <Image src={logo} objectFit={"cover"} w={["70%", "70%", "50%", "50%", "50%"]} cursor={"pointer"} />
+                <Link to={"/"} aria-label="home page">
+                    <Image src={logo} alt="logo" objectFit={"cover"} w={["70%", "70%", "50%", "50%", "50%"]} cursor={"pointer"} />
                 </Link>
             </motion.div>
             <motion.div >
-                {auth.isAuth == false ?
+                {auth.isAuth === false ?
                     <Link to={"/login"}>
                         <Button letterSpacing={"1px"} color="white" backgroundColor="#B79FEA" borderRadius={"40px"} boxShadow={"0px 2px 2px black"} _hover={{ borderRadius: 0, transition: "all 0.5s", backgroundColor: "#9f72ff", transform: "scale(1.1)" }} _active={{ transform: "scale(0.9)", transition: "all 0.5s" }}>
                             LOGIN

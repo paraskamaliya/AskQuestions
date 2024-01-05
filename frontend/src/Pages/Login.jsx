@@ -44,7 +44,7 @@ const Login = () => {
                     },
                     body: JSON.stringify(payload)
                 })
-                if (res.status == 200) {
+                if (res.status === 200) {
                     toast({
                         title: "Login Successfully",
                         description: "You are logged in",
@@ -56,7 +56,7 @@ const Login = () => {
                     dispatch({ type: LOGIN, payload: data })
                     navigate("/")
                 }
-                else if (res.status == 202) {
+                else if (res.status === 202) {
                     toast({
                         title: "Wrong Credentials",
                         description: "Data is not present, Please register",
@@ -91,7 +91,7 @@ const Login = () => {
         const payload = {
             email, username, password, conPassword, country
         }
-        if (password == conPassword) {
+        if (password === conPassword) {
             try {
                 setLoad(true);
                 let res = await fetch(`${URL}/users/register`, {
@@ -101,7 +101,7 @@ const Login = () => {
                     },
                     body: JSON.stringify(payload)
                 })
-                if (res.status == 200) {
+                if (res.status === 200) {
                     signShow((prev) => prev = false);
                     toast({
                         title: "Successfully Registered",
@@ -139,7 +139,7 @@ const Login = () => {
     return <DIV>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ width: "50%" }} transition={{ delay: 0.5 }}>
             {
-                signShow == false ?
+                signShow === false ?
                     <div>
                         <div className="cont" style={{
                             width: "70%",

@@ -94,7 +94,7 @@ const Home = () => {
                     </Select>
                 </div>
             </motion.div>
-            {postData.length == 0 && <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "81vh" }}>
+            {postData.length === 0 && <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "81vh" }}>
                 <motion.h1 style={{ color: "red", fontSize: "2rem" }} initial={{ x: "-100vw" }} animate={{ x: 0 }} transition={{ type: "spring", damping: 30 }}>No data is Present</motion.h1>
             </div>}
             {postData.length > 0 && <Box display={"grid"} gridTemplateColumns={["repeat(1,1fr)", "repeat(1,1fr)", "repeat(2,1fr)", "repeat(2,1fr)", "repeat(2,1fr)"]} >
@@ -124,7 +124,7 @@ const Home = () => {
                 {
                     totalPage !== 0 && new Array(totalPage).fill().map((_, i) => {
                         return <motion.button style={{
-                            padding: "0.5% 1% 0.5% 1%", background: "white", borderRadius: "10px", boxShadow: page == i + 1 && "2px 2px 2px #5c5757FF"
+                            padding: "0.5% 1% 0.5% 1%", background: "white", borderRadius: "10px", boxShadow: page === i + 1 && "2px 2px 2px #5c5757FF"
                         }} onClick={() => setPage(i + 1)} transition={{ duration: 0.5 }} key={i}>{i + 1}</motion.button>
                     })
                 }
