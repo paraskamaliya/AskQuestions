@@ -54,7 +54,7 @@ userRouter.post("/signin", async (req, res) => {
 userRouter.patch("/update/:id", auth, async (req, res) => {
     const { id } = req.params;
     try {
-        await UserModel.findByIdAndUpdate({ id }, req.body);
+        await UserModel.findByIdAndUpdate({ _id: id }, req.body);
         res.status(200).send({ "message": "User data Updated" })
     } catch (error) {
         res.status(400).send({ "message": "Something went wrong", "err": error })
@@ -64,7 +64,7 @@ userRouter.patch("/update/:id", auth, async (req, res) => {
 userRouter.delete("/delete/:id", auth, async (req, res) => {
     const { id } = req.params;
     try {
-        await UserModel.findByIdAndUpdate({ id }, req.body);
+        await UserModel.findByIdAndDelete({ _id: id });
         res.status(200).send({ "message": "User data Deleted" })
     } catch (error) {
         res.status(400).send({ "message": "Something went wrong", "err": error })
