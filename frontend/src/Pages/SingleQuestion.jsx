@@ -112,8 +112,8 @@ const SingleQuestion = () => {
         </motion.div>
     }
     return <DIV>
-        <Box display={["flex", "flex", "column", "column", "column"]} width={"90%"} margin={"auto"}>
-            <motion.div style={{ width: "140%", margin: "2%" }} >
+        <Box display={"flex"} flexDirection={["column", "column", "column", "row", "row"]} width={"90%"} margin={"auto"}>
+            <Box p={"2%"} w={["100%", "100%", "100%", "140%", "140%"]} >
                 <motion.div style={{ borderRadius: "25px", padding: "2%", color: "black", background: "#ffffffb5", boxShadow: "2px 2px 4px black" }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "4%" }}>
                         <Avatar src={`https://bit.ly/`} name={postData.username} />
@@ -133,7 +133,7 @@ const SingleQuestion = () => {
                 {auth.isAuth && <div style={{
                     margin: "2%", padding: "2%", justifyContent: "center", display: "flex", flexDirection: "column"
                 }}>
-                    < Textarea bgColor={"white"} color={"black"} value={comment} onChange={(e) => setComment(e.target.value)} focusBorderColor="black" />
+                    <Textarea bgColor={"white"} color={"black"} borderColor={"black"} placeholder="Enter your comment..." value={comment} onChange={(e) => setComment(e.target.value)} focusBorderColor="black" />
                     <motion.button style={{ textAlign: "right", fontSize: "larger", padding: "1%", margin: "auto", marginTop: "0.5%", width: "fit-content", borderRadius: "15px", backgroundColor: "#27AE60", color: "white" }} whileHover={{ boxShadow: "2px 2px 2px #5c5757FF" }} whileTap={{ boxShadow: "none" }} onClick={updateComment}>Comment</motion.button>
                 </div>}
                 <div style={{ margin: "2%" }}>
@@ -150,11 +150,10 @@ const SingleQuestion = () => {
                         </div>
                     }) : <h1 style={{ fontSize: "1.5rem", textAlign: "center" }}>No Comments are present, Be the first to Comment</h1>}
                 </div>
-            </motion.div>
-            <motion.div style={{ width: "60%", margin: "2%" }} >
+            </Box>
+            <Box m={"2%"} w={["100%", "100%", "100%", "60%", "60%"]} >
                 <h1 style={{ fontSize: "1.5rem", textAlign: "center" }}>Similar Questions</h1>
                 {simData?.length > 0 && simData.map((e) => {
-
                     return <div key={e._id} style={{ margin: "1%", border: "1px solid black", padding: "2%", borderRadius: "15px", background: "#ffffff96" }}>
                         <Link to={`/question/${e._id}`} >
                             <div style={{ display: "flex", alignItems: "center", gap: "4%" }}>
@@ -169,7 +168,7 @@ const SingleQuestion = () => {
                         </Link>
                     </div>
                 })}
-            </motion.div>
+            </Box>
         </Box>
     </DIV >
 }
