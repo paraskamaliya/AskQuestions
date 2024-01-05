@@ -54,10 +54,10 @@ const Navbar = () => {
                         </MenuButton>
                         <MenuList>
                             <MenuItem textAlign={"center"} borderBottom={"1px solid black"}>
-                                <Link to={"#"} style={{ width: "100%", fontWeight: 500, fontSize: "larger" }}>My Questions</Link>
+                                <Link to={"/myquestions"} style={{ width: "100%", fontWeight: 500, fontSize: "larger" }}>My Questions</Link>
                             </MenuItem>
                             <MenuItem textAlign={"center"} borderBottom={"1px solid black"}>
-                                <Link to={"#"} style={{ width: "100%", fontWeight: 500, fontSize: "larger" }}>My Profile</Link>
+                                <Link to={"/profile"} style={{ width: "100%", fontWeight: 500, fontSize: "larger" }}>My Profile</Link>
                             </MenuItem>
                             <MenuItem textAlign={"center"}>
                                 <Button style={{ margin: "auto", width: "100%", fontWeight: 500, fontSize: "larger", background: "red", color: "white" }} onClick={handleLogout}>Logout</Button>

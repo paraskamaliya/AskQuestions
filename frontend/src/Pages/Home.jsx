@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Avatar, Box, Image, Select } from "@chakra-ui/react";
 import loading from "../Images/loader.gif";
 import { useSelector } from "react-redux";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { AiTwotoneLike } from "react-icons/ai";
 
 const Home = () => {
@@ -15,9 +15,8 @@ const Home = () => {
     const [postData, setPostData] = useState([]);
     const [load, setLoad] = useState(false);
     const [totalPage, setTotalPage] = useState(0);
-    const [searchParams, setSearchParams] = useSearchParams();
-
     const [page, setPage] = useState(1);
+
     const [type, setType] = useState("");
     const [order, setOrder] = useState("");
 

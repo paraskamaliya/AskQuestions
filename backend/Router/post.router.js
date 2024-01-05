@@ -70,9 +70,9 @@ postRouter.delete("/delete/:id", auth, async (req, res) => {
 
 postRouter.patch("/update/:id", auth, async (req, res) => {
     const { id } = req.params;
-    const { upvotes, comments } = req.body;
+    const { title, description, type, upvotes, comments } = req.body;
     try {
-        await PostModel.findByIdAndUpdate({ _id: id }, { upvotes, comments });
+        await PostModel.findByIdAndUpdate({ _id: id }, { title, description, type, upvotes, comments });
         const post = await PostModel.findOne({ _id: id })
         res.status(200).send({ "msg": "Post updated successfully", postData: post })
     } catch (error) {

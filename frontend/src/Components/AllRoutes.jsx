@@ -4,6 +4,8 @@ import Home from "../Pages/Home";
 import AddQuestion from "../Pages/AddQuestion";
 import SingleQuestion from "../Pages/SingleQuestion";
 import PrivateRoute from "./PrivateRoute";
+import MyProfile from "../Pages/MyProfile";
+import MyQuestions from "../Pages/MyQuestions";
 
 const AllRoutes = () => {
     return <Routes>
@@ -19,7 +21,16 @@ const AllRoutes = () => {
                 <SingleQuestion />
             </PrivateRoute>
         } />
-        <Route path="/profile" />
+        <Route path="/profile" element={
+            <PrivateRoute>
+                <MyProfile />
+            </PrivateRoute>
+        } />
+        <Route path="/myquestions" element={
+            <PrivateRoute>
+                <MyQuestions />
+            </PrivateRoute>
+        } />
     </Routes>
 }
 export default AllRoutes;
