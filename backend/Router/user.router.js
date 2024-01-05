@@ -6,7 +6,7 @@ const { UserModel } = require("../Model/user.model");
 const { auth } = require('../Middlewares/auth.middleware');
 const { ListModel } = require("../Model/list.model");
 userRouter.post("/register", async (req, res) => {
-    const { username, email, password, city } = req.body;
+    const { username, email, password, country } = req.body;
     const user = await UserModel.findOne({ email })
     try {
         if (user) {
@@ -17,7 +17,7 @@ userRouter.post("/register", async (req, res) => {
                 if (err) {
                     res.status(202).send({ "msg": "Something went wrong, Please try again", "err": err })
                 } else {
-                    let user = new UserModel({ username, email, password: hash, city })
+                    let user = new UserModel({ username, email, password: hash, country })
                     await user.save();
                     res.status(200).send({ "msg": "User is Registered" })
                 }

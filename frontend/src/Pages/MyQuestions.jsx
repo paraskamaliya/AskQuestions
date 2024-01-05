@@ -85,7 +85,7 @@ const MyQuestions = () => {
         </motion.div>
     }
     return <div style={{ background: "rgb(200, 180, 240)", minHeight: "90vh" }} >
-        <h1 style={{ textAlign: "center", fontSize: "2rem", fontWeight: 500 }}>My Questions</h1>
+        <h1 style={{ textAlign: "center", fontSize: "2rem", fontWeight: 500, paddingTop: "0.5%" }}>My Questions</h1>
         <motion.div style={{ width: "90vw", margin: "auto" }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5, duration: 0.3 }}>
             {questionData.length == 0 && <motion.div style={{ height: "80vh", fontWeight: 500, display: "flex", alignItems: "center", justifyContent: "center", background: "rgb(200, 180, 240)", color: "red", fontSize: "1.5rem" }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 No questions are posted
