@@ -2,16 +2,18 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import loading from "../Images/loader.gif";
-import { Avatar, Box, Button, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, useDisclosure, useToast } from "@chakra-ui/react";
+import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Avatar, Box, Button, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, useDisclosure, useToast } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
 const MyQuestions = () => {
     const URL = "https://askquestions.onrender.com";
     const auth = useSelector(store => store.AuthReducer);
     const toast = useToast();
     const [questionData, setQuestionData] = useState([]);
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen: open, onOpen: onopen, onClose: close } = useDisclosure();
     const [load, setLoad] = useState(false);
 
     const [title, setTitle] = useState("");
@@ -74,6 +76,35 @@ const MyQuestions = () => {
             })
         }
     }
+    const handleDelete = async () => {
+        try {
+            let res = await fetch(`${URL}/posts/delete/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${auth.token.split('"')[0]}`
+                }
+            })
+            if (res.status == 200) {
+                let updated = questionData.filter((el) => el._id !== id)
+                setQuestionData((prev) => prev = updated);
+                toast({
+                    title: "Question is Deleted",
+                    description: "Question is deleted successfully",
+                    duration: 3000,
+                    isClosable: true,
+                    status: "success"
+                })
+            }
+        } catch (error) {
+            toast({
+                title: "Something went wrong",
+                description: "Something went wrong, Please try again",
+                duration: 3000,
+                isClosable: true,
+                status: "error"
+            })
+        }
+    }
 
     useEffect(() => {
         fetchUserQuestions();
@@ -106,17 +137,49 @@ const MyQuestions = () => {
                             <h1 style={{ fontSize: "larger" }}>Upvotes :- {el.upvotes}</h1>
                         </Link>
                         <div style={{ display: "flex", justifyContent: "right", alignItems: "center", gap: "2%" }}>
-                            {auth.isAuth && <motion.button style={{ fontSize: "larger", fontWeight: 500, padding: "1% 2.5% 1% 2.5%", background: "rgb(186, 153, 250)", borderRadius: "15px", display: "flex", alignItems: "center", gap: "5%" }} whileHover={{ background: "rgb(200, 180, 240)", transition: { duration: 0.5 } }} whileTap={{ background: "rgb(186, 153, 250)" }} onClick={() => {
+                            <motion.button style={{ fontSize: "larger", fontWeight: 500, padding: "1% 2.5% 1% 2.5%", background: "rgb(255,0,0)", borderRadius: "15px", display: "flex", alignItems: "center", gap: "1%", color: "white" }} whileHover={{ background: "rgb(251, 91, 91)", transition: { duration: 0.5 } }} whileTap={{ background: "rgb(255, 0, 0)" }} onClick={() => {
+                                onopen();
+                                setId(el._id)
+                            }}>Delete<MdDelete size={"1.5em"} /></motion.button>
+                            <motion.button style={{ fontSize: "larger", fontWeight: 500, padding: "1% 2.5% 1% 2.5%", background: "rgb(186, 153, 250)", borderRadius: "15px", display: "flex", alignItems: "center", gap: "2%" }} whileHover={{ background: "rgb(200, 180, 240)", transition: { duration: 0.5 } }} whileTap={{ background: "rgb(186, 153, 250)" }} onClick={() => {
                                 setDescription(el.description)
                                 setTitle(el.title);
                                 setType(el.type);
                                 setId(el._id);
                                 onOpen()
-                            }}>Edit <FaEdit size={"1em"} /></motion.button>}
+                            }}>Edit <FaEdit size={"1em"} /></motion.button>
                             <p style={{ textAlign: "right", fontWeight: 300 }} >Posted at :- {el.date}</p>
                         </div>
                     </motion.div>
                 })}
+                <AlertDialog
+                    isOpen={open}
+                    onClose={close}
+                >
+                    <AlertDialogOverlay>
+                        <AlertDialogContent>
+                            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                                Delete Question
+                            </AlertDialogHeader>
+
+                            <AlertDialogBody>
+                                Are you sure? You can't undo this action afterwards.
+                            </AlertDialogBody>
+
+                            <AlertDialogFooter>
+                                <Button onClick={close}>
+                                    Cancel
+                                </Button>
+                                <Button colorScheme='red' onClick={() => {
+                                    close();
+                                    handleDelete();
+                                }} ml={3}>
+                                    Delete
+                                </Button>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialogOverlay>
+                </AlertDialog>
                 <Modal isOpen={isOpen} onClose={onClose}>
                     <ModalOverlay />
                     <ModalContent>
