@@ -6,7 +6,7 @@ import { Box, IconButton, Input, InputGroup, InputRightElement, Select, Spinner,
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useDispatch } from "react-redux";
 import { LOGIN } from "../Redux/AuthReducer/actionType";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Login = () => {
     const URL = "https://askquestions.onrender.com";
