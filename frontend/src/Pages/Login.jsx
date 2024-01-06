@@ -13,6 +13,7 @@ const Login = () => {
     const toast = useToast();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [signShow, setSignShow] = useState(false);
 
@@ -59,7 +60,7 @@ const Login = () => {
                     })
                     let data = await res.json();
                     dispatch({ type: LOGIN, payload: data })
-                    navigate("/")
+                    navigate(location.state || "/", { replace: true })
                 }
                 else if (res.status === 202) {
                     toast({
