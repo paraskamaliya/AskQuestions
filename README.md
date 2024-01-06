@@ -41,7 +41,7 @@ Home page with frequently asked questions by other users and option for sorting 
 
 ### Login/SignUp :- 
 Login/SignUp is page where user can login and signup with password validator.
-![LoginPage](https://github.com/paraskamaliya/AskQuestions/assets/130351451/ac7e231a-811f-444d-aa5e-79ee9c797e90)
+![LoginPage](https://github.com/paraskamaliya/AskQuestions/assets/130351451/d7430d51-b011-4187-84c6-f481acda733c)
 
 
 
@@ -53,7 +53,7 @@ Single Question page is for see more information about question and comments, al
 
 ### MyQuestion Page :-
 This page is for only logged in user where user can see questions which were posted by user. Also user can edit this question and delete it.
-![MyQuestionPage](https://github.com/paraskamaliya/AskQuestions/assets/130351451/b7f6a966-af80-473d-aa57-d2eba6a18367)
+![MyQuestionPage](https://github.com/paraskamaliya/AskQuestions/assets/130351451/b3e6014c-1679-49db-bdce-630d3a30ff1a)
 
 
 
