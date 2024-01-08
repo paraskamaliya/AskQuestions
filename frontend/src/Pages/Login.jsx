@@ -127,7 +127,7 @@ const Login = () => {
                     body: JSON.stringify(payload)
                 })
                 if (res.status === 200) {
-                    signShow((prev) => prev = false);
+                    signShow((pre) => pre = false);
                     toast({
                         title: "Successfully Registered",
                         description: "You are successfully registered, Please login",
@@ -196,7 +196,7 @@ const Login = () => {
         }
     }
     return <DIV>
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ width: "100%" }} transition={{ delay: 0.5 }}>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ width: "100%", display: "flex", alignSelf: "center", justifySelf: "center", height: "100%" }} transition={{ delay: 0.5 }}>
             {
                 signShow === false ?
                     <Box className="cont" w={["90%", "90%", "60%", "50%", "40%"]} style={{
@@ -224,7 +224,8 @@ const Login = () => {
                                 border: "none",
                                 fontSize: "1.5em",
                                 padding: "3% 7.5% 3% 7.5%",
-                                color: "white"
+                                color: "white",
+                                width: "35%"
                             }}
                             variants={buttonVariant}
                             whileHover="hover"
@@ -279,7 +280,8 @@ const Login = () => {
                                 border: "none",
                                 fontSize: "1.5em",
                                 padding: "3% 7.5% 3% 7.5%",
-                                color: "white"
+                                color: "white",
+                                width: "35%"
                             }}
                             variants={buttonVariant}
                             whileHover="hover"
