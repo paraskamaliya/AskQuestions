@@ -127,6 +127,7 @@ const Login = () => {
                     body: JSON.stringify(payload)
                 })
                 if (res.status === 200) {
+                    signShow((prev) => prev = false);
                     toast({
                         title: "Successfully Registered",
                         description: "You are successfully registered, Please login",
@@ -134,7 +135,6 @@ const Login = () => {
                         isClosable: true,
                         status: "success"
                     })
-                    signShow((prev) => prev = false);
                 }
                 setLoad(false);
             } catch (error) {
