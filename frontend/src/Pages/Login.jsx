@@ -196,7 +196,7 @@ const Login = () => {
         }
     }
     return <DIV>
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ width: "100%", display: "flex", alignSelf: "center", justifySelf: "center", height: "100%" }} transition={{ delay: 0.5 }}>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ width: "100%", display: "flex", alignSelf: "center", justifySelf: "center", height: "100%" }} transition={{ delay: 0.5 }} exit={{ opacity: 0, transition: { duration: 0.5 } }}>
             {
                 signShow === false ?
                     <Box className="cont" w={["90%", "90%", "60%", "50%", "40%"]} style={{

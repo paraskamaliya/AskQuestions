@@ -13,7 +13,7 @@ const PlusButton = () => {
                     right: "50px",
                     backgroundColor: "#27AE60",
                     color: "white",
-                    padding: isSmallScreen ? "0.5rem" : "0.8% 1% 0.8% 1%",
+                    padding: isSmallScreen ? "1rem" : "0.8% 1% 0.8% 1%",
                     border: "none",
                     borderRadius: "50%",
                     cursor: "pointer",

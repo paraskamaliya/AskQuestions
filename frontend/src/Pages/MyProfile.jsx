@@ -48,7 +48,7 @@ const MyProfile = () => {
 
     return <div style={{ background: "rgb(200, 180, 240)", minHeight: "90vh" }} >
         <h1 style={{ textAlign: "center", fontSize: "2rem", fontWeight: 500, paddingTop: "0.5%" }}>My Profile</h1>
-        <motion.div style={{ width: smallWidth ? "90%" : "50%", margin: "auto", justifyContent: "center", textAlign: "center" }} initial={{ x: "100vw" }} animate={{ x: 0 }} transition={{ delay: 0.3 }} >
+        <motion.div style={{ width: smallWidth ? "90%" : "50%", margin: "auto", justifyContent: "center", textAlign: "center" }} initial={{ x: "100vw" }} animate={{ x: 0 }} transition={{ delay: 0.5, type: "spring", stiffness: 50 }} exit={{ x: "100vw", transition: { duration: 0.5 } }} >
             <Input value={userData.username} onChange={(e) => setUserData({ ...userData, username: e.target.value })} placeholder="Enter Username" borderColor={"black"} focusBorderColor="black" m={1} isReadOnly={edit} />
             <Input value={userData.email} borderColor={"black"} focusBorderColor="black" m={1} isReadOnly />
             <Select value={userData.country} onChange={(e) => setUserData({ ...userData, country: e.target.value })} placeholder="Select Country" borderColor={"black"} focusBorderColor="black" m={1} disabled={edit}>

@@ -70,13 +70,13 @@ const Home = () => {
         fetchTheData();
     }, [type, order, page])
     if (load) {
-        return <motion.div style={{ height: "90vh", display: "flex", alignItems: "center", justifyContent: "center", background: "rgb(200, 180, 240)" }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        return <motion.div style={{ height: "90vh", display: "flex", alignItems: "center", justifyContent: "center", background: "rgb(200, 180, 240)" }} >
             <Image src={loading} w={["15vw", "15vw", "10vw", "10vw", "5vw"]} marginBottom={"10vh"} />
-        </motion.div>
+        </motion.div >
     }
 
     return <DIV>
-        <motion.div style={{ width: "90%", margin: "auto", paddingTop: "1%" }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >
+        <motion.div style={{ width: "90%", margin: "auto", paddingTop: "1%" }} initial={{ x: "100vw" }} animate={{ x: 0 }} transition={{ delay: 0.5, type: "spring", stiffness: 50 }} exit={{ x: "-100vw", transition: { duration: 0.5 } }}>
             <motion.div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }} initial={{ borderBottom: "0" }} animate={{ borderBottom: "1px solid black" }}>
                 <motion.h1 style={{ fontSize: "2.5em", fontWeight: 500, color: "black" }} >Recent Posts</motion.h1>
                 <div style={{ display: "flex", gap: "1vw" }}>
@@ -95,7 +95,7 @@ const Home = () => {
                 </div>
             </motion.div>
             {postData.length === 0 && <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "81vh" }}>
-                <motion.h1 style={{ color: "red", fontSize: "2rem" }} initial={{ x: "-100vw" }} animate={{ x: 0 }} transition={{ type: "spring", damping: 30 }}>No data is Present</motion.h1>
+                <motion.h1 style={{ color: "red", fontSize: "2rem" }} >No data is Present</motion.h1>
             </div>}
             {postData.length > 0 && <Box display={"grid"} gridTemplateColumns={["repeat(1,1fr)", "repeat(1,1fr)", "repeat(2,1fr)", "repeat(2,1fr)", "repeat(2,1fr)"]} >
                 {postData?.map((el) => {
@@ -124,7 +124,7 @@ const Home = () => {
                 {
                     totalPage !== 0 && new Array(totalPage).fill().map((_, i) => {
                         return <motion.button style={{
-                            padding: "0.5% 1% 0.5% 1%", background: "white", borderRadius: "10px", boxShadow: page === i + 1 && "2px 2px 2px #5c5757FF"
+                            fontSize: "larger", padding: "0.5% 1% 0.5% 1%", background: "white", borderRadius: "10px", boxShadow: page === i + 1 && "2px 2px 2px #5c5757FF"
                         }} onClick={() => setPage(i + 1)} transition={{ duration: 0.5 }} key={i}>{i + 1}</motion.button>
                     })
                 }
@@ -137,4 +137,6 @@ const DIV = styled.div`
     background: rgb(200, 180, 240);
     font-family: "Roboto";
     min-height: 90vh;
+    max-width: 100vw;
+    margin: auto;
 `
