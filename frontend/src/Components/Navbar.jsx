@@ -1,5 +1,5 @@
 import logo from "../Images/logo.png"
-import { Avatar, Button, Image, Menu, MenuButton, MenuItem, MenuList, useToast } from "@chakra-ui/react"
+import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Avatar, Button, Image, Menu, MenuButton, MenuItem, MenuList, useDisclosure, useToast } from "@chakra-ui/react"
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +8,7 @@ import { LOGOUT } from "../Redux/AuthReducer/actionType";
 
 const Navbar = () => {
     const auth = useSelector(store => store.AuthReducer);
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const URL = "https://askquestions.onrender.com";
     const dispatch = useDispatch();
     const toast = useToast();
@@ -60,7 +61,36 @@ const Navbar = () => {
                                 <Link to={"/profile"} style={{ width: "100%", fontWeight: 500, fontSize: "larger" }}>My Profile</Link>
                             </MenuItem>
                             <MenuItem textAlign={"center"}>
-                                <Button style={{ margin: "auto", width: "100%", fontWeight: 500, fontSize: "larger", background: "red", color: "white" }} onClick={handleLogout}>Logout</Button>
+                                <Button style={{ margin: "auto", width: "100%", fontWeight: 500, fontSize: "larger", background: "red", color: "white" }} onClick={onOpen}>Logout</Button>
+                                <AlertDialog
+                                    isOpen={isOpen}
+                                    onClose={onClose}
+                                    isCentered
+                                >
+                                    <AlertDialogOverlay>
+                                        <AlertDialogContent w={["80%", "80%", "100%", "100%", "100%"]}>
+                                            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                                                Logout
+                                            </AlertDialogHeader>
+
+                                            <AlertDialogBody>
+                                                Are you sure? You want to Logout.
+                                            </AlertDialogBody>
+
+                                            <AlertDialogFooter>
+                                                <Button onClick={onClose}>
+                                                    Cancel
+                                                </Button>
+                                                <Button colorScheme='red' onClick={() => {
+                                                    onClose();
+                                                    handleLogout();
+                                                }} ml={3}>
+                                                    Logout
+                                                </Button>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialogOverlay>
+                                </AlertDialog>
                             </MenuItem>
                         </MenuList>
                     </Menu>
