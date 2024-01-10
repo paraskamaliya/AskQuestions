@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom"
 import { motion } from "framer-motion"
-import { Avatar, Box, Image, Textarea } from "@chakra-ui/react";
+import { Avatar, Box, Button, Image, Textarea, useToast } from "@chakra-ui/react";
 import loading from "../Images/loader.gif";
 import { styled } from "styled-components";
 import { useSelector } from "react-redux";
@@ -11,6 +11,8 @@ const SingleQuestion = () => {
     const { id } = useParams();
     const auth = useSelector(store => store.AuthReducer);
     const URL = "https://askquestions.onrender.com";
+    const toast = useToast();
+
     const [postData, setPostData] = useState([]);
     const [simData, setSimData] = useState([]);
     const [load, setLoad] = useState(false);
@@ -27,10 +29,17 @@ const SingleQuestion = () => {
                 }
             })
             let data = await res.json();
+            console.log(data);
             setPostData(data);
             fetchExtraData(data.type);
         } catch (error) {
-            console.log(error);
+            toast({
+                title: "Something went wrong",
+                description: "Something went wrong, Please try again",
+                duration: 3000,
+                isClosable: true,
+                status: "error"
+            })
         }
     }
     const fetchExtraData = async (type) => {
@@ -45,7 +54,13 @@ const SingleQuestion = () => {
             let data = await res.json();
             setSimData(data.posts);
         } catch (error) {
-            console.log(error);
+            toast({
+                title: "Something went wrong",
+                description: "Something went wrong, Please try again",
+                duration: 3000,
+                isClosable: true,
+                status: "error"
+            })
         } finally {
             setLoad(false);
         }
@@ -67,7 +82,13 @@ const SingleQuestion = () => {
                 setPostData((prev) => prev = updated.postData);
             }
         } catch (error) {
-            console.log(error);
+            toast({
+                title: "Something went wrong",
+                description: "Something went wrong, Please try again",
+                duration: 3000,
+                isClosable: true,
+                status: "error"
+            })
         }
     }
     const updateComment = async () => {
@@ -81,6 +102,7 @@ const SingleQuestion = () => {
 
         let payload = {
             username: auth.user.username,
+            userId: auth.user._id,
             comment,
             time: `${formattedDate} at ${formattedTime}`,
         }
@@ -97,9 +119,56 @@ const SingleQuestion = () => {
             if (res.status === 200) {
                 let updated = await res.json();
                 setPostData((prev) => prev = updated.postData);
+                toast({
+                    title: "Commented Posted",
+                    description: "Your commented posted successfully",
+                    duration: 3000,
+                    isClosable: true,
+                    status: "success"
+                })
             }
         } catch (error) {
-            console.log(error);
+            toast({
+                title: "Something went wrong",
+                description: "Something went wrong, Please try again",
+                duration: 3000,
+                isClosable: true,
+                status: "error"
+            })
+        }
+    }
+    const handleDelete = async (time) => {
+        const { comments } = postData;
+        const updated = comments.filter((el) => {
+            return el.time !== time;
+        })
+        try {
+            let res = await fetch(`${URL}/posts/update/${id}`, {
+                method: "PATCH",
+                headers: {
+                    "Authorization": `Bearer ${auth.token.split('"')}`,
+                    "content-type": "application/json",
+                },
+                body: JSON.stringify({ ...postData, comments: updated })
+            })
+            if (res.status == 200) {
+                setPostData({ ...postData, comments: updated })
+                toast({
+                    title: "Your Commented Deleted",
+                    description: "Your commented deleted successfully.",
+                    duration: 3000,
+                    isClosable: true,
+                    status: "success"
+                })
+            }
+        } catch (error) {
+            toast({
+                title: "Something went wrong",
+                description: "Something went wrong, Please try again",
+                duration: 3000,
+                isClosable: true,
+                status: "error"
+            })
         }
     }
 
@@ -141,9 +210,12 @@ const SingleQuestion = () => {
                         <h1 style={{ fontSize: "2.5rem", textAlign: "center" }}>Comments</h1>
                         {postData?.comments?.length > 0 ? postData.comments.map((el, i) => {
                             return <div key={i} style={{ margin: "1%", padding: "1.5%", border: "1px solid black", background: "#f1f1f1" }}>
-                                <div style={{ display: "flex", alignItems: "center", gap: "2%" }}>
-                                    <Avatar src={`https://bit.ly/`} name={el.username} />
-                                    <p style={{ fontSize: "larger", fontWeight: 500 }}>{el.username}</p>
+                                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                    <div style={{ display: "flex", alignItems: "center", gap: "2%", width: "70%" }}>
+                                        <Avatar src={`https://bit.ly/`} name={el.username} />
+                                        <p style={{ fontSize: "larger", fontWeight: 500 }}>{el.username}</p>
+                                    </div>
+                                    {el.userId == auth.user._id && <Button colorScheme="red" color={"white"} onClick={() => handleDelete(el.time)}>Delete</Button>}
                                 </div>
                                 <div style={{ marginTop: "1%", marginBottom: "1%", border: "0.5px solid black" }} ></div>
                                 <h1 style={{ fontSize: "larger" }}>{el.comment}</h1>

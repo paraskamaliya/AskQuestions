@@ -4,21 +4,22 @@ import { useEffect, useState } from "react";
 import { Avatar, Box, Image, Select } from "@chakra-ui/react";
 import loading from "../Images/loader.gif";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { AiTwotoneLike } from "react-icons/ai";
 
 const Home = () => {
     const URL = "https://askquestions.onrender.com";
-    const limit = 10;
+    const [searchParams, setSearchParams] = useSearchParams();
     const auth = useSelector(store => store.AuthReducer);
+
+    const [limit] = useState(searchParams.get('limit') || 10);
+    const [page, setPage] = useState(searchParams.get('page') || 1);
+    const [type, setType] = useState(searchParams.get('type') || "");
+    const [order, setOrder] = useState(searchParams.get('order') || "");
 
     const [postData, setPostData] = useState([]);
     const [load, setLoad] = useState(false);
     const [totalPage, setTotalPage] = useState(0);
-    const [page, setPage] = useState(1);
-
-    const [type, setType] = useState("");
-    const [order, setOrder] = useState("");
 
     const fetchTheData = async () => {
         setLoad(true)
@@ -80,7 +81,16 @@ const Home = () => {
             <motion.div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }} initial={{ borderBottom: "0" }} animate={{ borderBottom: "1px solid black" }}>
                 <motion.h1 style={{ fontSize: "2.5em", fontWeight: 500, color: "black" }} >Recent Posts</motion.h1>
                 <div style={{ display: "flex", gap: "1vw" }}>
-                    <Select placeholder="Select Type for Filter" bgColor={"white"} borderColor={"black"} focusBorderColor="black" value={type} onChange={(e) => setType(e.target.value)}>
+                    <Select placeholder="Select Type for Filter" bgColor={"white"} borderColor={"black"} focusBorderColor="black" value={type} onChange={(e) => {
+                        setType(e.target.value)
+                        if (e.target.value == "") {
+                            const { type, ...updatedSearchParams } = searchParams;
+                            setSearchParams(updatedSearchParams)
+                        }
+                        else {
+                            setSearchParams({ ...searchParams, type: e.target.value })
+                        }
+                    }}>
                         <option value="Tech">Tech</option>
                         <option value="Environmental">Environmental</option>
                         <option value="Language">Language</option>
@@ -88,7 +98,16 @@ const Home = () => {
                         <option value="Commerce">Commerce</option>
                         <option value="General">General</option>
                     </Select>
-                    <Select value={order} onChange={(e) => setOrder(e.target.value)} placeholder="Select order for Sort" bgColor={"white"} borderColor={"black"} focusBorderColor="black">
+                    <Select value={order} placeholder="Select order for Sort" bgColor={"white"} borderColor={"black"} focusBorderColor="black" onChange={(e) => {
+                        setOrder(e.target.value)
+                        if (e.target.value == "") {
+                            const { order, ...updatedSearchParams } = searchParams;
+                            setSearchParams(updatedSearchParams)
+                        }
+                        else {
+                            setSearchParams({ ...searchParams, order: e.target.value })
+                        }
+                    }} >
                         <option value={"asc"}>Ascending</option>
                         <option value={"desc"}>Descending</option>
                     </Select>
