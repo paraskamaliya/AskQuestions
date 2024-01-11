@@ -17,6 +17,7 @@ adminRoute.get('/', async (req, res) => {
 adminRoute.get("/user/:id", async (req, res) => {
     const { id } = req.params;
     try {
+        let user = await UserModel.findOne({ _id: id })
         let posts = await PostModel.find({ userId: id })
         res.status(200).send(posts);
     } catch (error) {

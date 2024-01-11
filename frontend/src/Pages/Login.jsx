@@ -60,7 +60,12 @@ const Login = () => {
                     })
                     let data = await res.json();
                     dispatch({ type: LOGIN, payload: data })
-                    navigate(location.state || "/", { replace: true })
+                    if (data.userDetails.roles.includes("admin")) {
+                        navigate("/admin")
+                    }
+                    else {
+                        navigate(location.state || "/", { replace: true })
+                    }
                 }
                 else if (res.status === 202) {
                     toast({

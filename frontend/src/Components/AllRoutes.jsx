@@ -7,6 +7,8 @@ import PrivateRoute from "./PrivateRoute";
 import MyProfile from "../Pages/MyProfile";
 import MyQuestions from "../Pages/MyQuestions";
 import { AnimatePresence } from "framer-motion";
+import AdminHome from "./AdminHome";
+import UserInfo from "./UserInfo";
 
 const AllRoutes = () => {
     const location = useLocation();
@@ -32,6 +34,16 @@ const AllRoutes = () => {
             <Route path="/myquestions" element={
                 <PrivateRoute>
                     <MyQuestions />
+                </PrivateRoute>
+            } />
+            <Route path="/admin" element={
+                <PrivateRoute>
+                    <AdminHome />
+                </PrivateRoute>
+            } />
+            <Route path="/userinfo/:id" element={
+                <PrivateRoute>
+                    <UserInfo />
                 </PrivateRoute>
             } />
         </Routes>
