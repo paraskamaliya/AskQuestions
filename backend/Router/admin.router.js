@@ -28,7 +28,7 @@ adminRoute.get("/user/:id", async (req, res) => {
 adminRoute.patch('/updateuser/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        let updatedUser = await UserModel.findByIdAndUpdate({ _id: id });
+        let updatedUser = await UserModel.findByIdAndUpdate({ _id: id }, req.body);
         res.status(200).send(updatedUser)
     } catch (error) {
         res.status(400).send({ "msg": "Something went wrong", "err": error })

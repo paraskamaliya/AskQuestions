@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import { Avatar, Heading, Image, Stack, Text } from "@chakra-ui/react";
+import { Avatar, Button, Heading, Image, Stack, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import loading from "../Images/loader.gif";
 import { useSelector } from "react-redux";
@@ -31,9 +31,31 @@ const AdminHome = () => {
         }
     }
 
+    const handleAdminUpdate = async (data) => {
+        data = { ...data, roles: [...data.roles, "admin"] };
+        try {
+            let res = await fetch(`${URL}/admin/updateuser/${data._id}`, {
+                method: "PATCH",
+                headers: {
+                    "Authorization": `Bearer ${auth.token.split('"')[0]}`
+                },
+                body: JSON.stringify(data)
+            })
+            if (res.status == 200) {
+                let updated = userData.map((el) => {
+                    return el._id == data._id ? data : el
+                })
+                setUserData(updated);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
         fetchTheData();
     }, [])
+
     if (load) {
         return <motion.div style={{ height: "90vh", display: "flex", alignItems: "center", justifyContent: "center", background: "rgb(200, 180, 240)" }} >
             <Image src={loading} w={["15vw", "15vw", "10vw", "10vw", "5vw"]} marginBottom={"10vh"} />
@@ -57,6 +79,7 @@ const AdminHome = () => {
                                 <Text fontSize={"lg"} fontWeight={400}>Country :- {el.country}</Text>
                             </div>
                         </Link>
+                        {!el.roles.includes("admin") && <Button colorScheme="green" fontWeight={500} onClick={() => handleAdminUpdate(el)}>Make Admin</Button>}
                     </motion.div>
                 })}
             </Stack>
