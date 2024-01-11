@@ -15,7 +15,7 @@ const AdminHome = () => {
     const fetchTheData = async () => {
         setLoad(true)
         try {
-            let url = `${URL}/admin`
+            let url = `${URL}/admin/`
             let res = await fetch(url, {
                 method: "GET",
                 headers: {
@@ -43,7 +43,7 @@ const AdminHome = () => {
     return <DIV>
         <motion.div style={{ padding: "0.5%" }} initial={{ x: "100vw" }} animate={{ x: 0 }} transition={{ delay: 0.5, type: "spring", stiffness: 50 }} exit={{ x: "-100vw", transition: { duration: 0.5 } }}>
             <Heading color={"green"} textAlign={"center"}>Welcome Admin</Heading>
-            <Stack display={"grid"} gridTemplateColumns={["repeat(1,1fr)", "repeat(1,1fr)", "repeat(2,1fr)", "repeat(2,1fr)", "repeat(2,1fr)"]}>
+            <Stack display={"grid"} gridTemplateColumns={["repeat(2,1fr)", "repeat(2,1fr)", "repeat(3,1fr)", "repeat(3,1fr)", "repeat(3,1fr)"]}>
                 {userData.length > 0 && userData.map((el) => {
                     return <motion.div style={{ margin: "2%", borderRadius: "25px", padding: "2%", color: "black", background: "#ffffffb5" }} key={el._id} whileHover={{ boxShadow: "2px 2px 4px black", transition: { duration: 0.5 } }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
                         <Link to={`/userinfo/${el._id}`}>

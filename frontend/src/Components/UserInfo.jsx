@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 import { motion } from "framer-motion";
-import { Avatar, Heading, Image, Stack } from "@chakra-ui/react";
+import { Avatar, Button, Heading, Image, Stack } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -14,7 +14,7 @@ const UserInfo = () => {
     const [load, setLoad] = useState(false);
     const [userData, setUserData] = useState({});
     const [postData, setPostData] = useState([]);
-    console.log(postData);
+
     const fetchTheData = async () => {
         setLoad(true)
         try {
@@ -35,6 +35,25 @@ const UserInfo = () => {
         }
     }
 
+    const handleDelete = async (id) => {
+        try {
+            let res = await fetch(`${URL}/admin/deletequestion/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${auth.token.split('"')[0]}`
+                }
+            })
+            if (res.status == 200) {
+                let updated = postData.filter((el) => {
+                    return el._id !== id
+                })
+                setPostData(updated);
+            }
+        } catch (error) {
+
+        }
+    }
+
     useEffect(() => {
         fetchTheData();
     }, [])
@@ -47,7 +66,7 @@ const UserInfo = () => {
     return <DIV>
         <motion.div style={{ padding: "0.5%" }} initial={{ x: "100vw" }} animate={{ x: 0 }} transition={{ delay: 0.5, type: "spring", stiffness: 50 }} exit={{ x: "-100vw", transition: { duration: 0.5 } }}>
             <Heading color={"green"} textAlign={"center"}>User Info</Heading>
-            <Stack display={"flex"} flexDirection={["column", "column", "row", "row", "row"]} w={"90%"} m={"auto"} gap={"2%"}>
+            <Stack display={"flex"} flexDirection={["column", "column", "row", "row", "row"]} w={"90%"} m={"auto"} marginTop={2} gap={"2%"}>
                 <motion.div style={{ width: "50%", height: "fit-content", border: "1px solid black", padding: "2%", backgroundColor: "white", borderRadius: "15px" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "4%", margin: "auto", marginBottom: "2%" }}>
                         <Avatar src={`https://bit.ly/`} name={userData.username} />
@@ -58,13 +77,16 @@ const UserInfo = () => {
                     <p>Questions :- {postData.length}</p>
                 </motion.div>
                 <motion.div style={{ width: "50%" }}>
-                    <Heading color={"red"} textAlign={"center"} fontSize={"larger"}>Asked Questions</Heading>
+                    <Heading color={"red"} textAlign={"center"} fontSize={"x-large"}>Asked Questions</Heading>
                     {postData.length > 0 && postData.map((el) => {
-                        return <div style={{ padding: "1%", border: "1px solid black", margin: "1%", background: "white" }}>
+                        return <div style={{ padding: "2%", border: "1px solid black", margin: "1%", background: "white" }}>
                             <p>Title :- {el.title}</p>
                             <p>Description :- {el.description}</p>
                             <p>Type :- {el.type}</p>
                             <p>Upvotes :- {el.upvotes}</p>
+                            <Button colorScheme="red" fontWeight={300} onClick={() => {
+                                handleDelete(el._id)
+                            }}>Delete</Button>
                         </div>
                     })}
                 </motion.div>
