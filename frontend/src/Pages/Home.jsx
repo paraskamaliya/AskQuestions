@@ -133,7 +133,7 @@ const Home = () => {
                         </Link>
                         <div style={{ display: "flex", justifyContent: "right", alignItems: "center", gap: "2%" }}>
                             {auth.isAuth && <motion.button style={{ fontSize: "larger", fontWeight: 500, padding: "1% 2.5% 1% 2.5%", background: "rgb(186, 153, 250)", borderRadius: "15px", display: "flex", alignItems: "center", gap: "3%" }} whileHover={{ background: "rgb(200, 180, 240)", transition: { duration: 0.5 } }} whileTap={{ background: "rgb(186, 153, 250)" }} onClick={() => handleUpvote(el)}>Upvote <AiTwotoneLike size={"1.5em"} /></motion.button>}
-                            <p style={{ textAlign: "right", fontWeight: 300 }} >Posted at :- {el.date}</p>
+                            <p style={{ textAlign: "right", fontWeight: 300 }} >Posted on :- {el.date}</p>
                         </div>
                     </motion.div>
                 })}

@@ -54,6 +54,9 @@ const Navbar = () => {
                             <Avatar src={`https://bit.ly/`} name={auth.user.username} />
                         </MenuButton>
                         <MenuList>
+                            {auth.user.roles.includes("admin") && <MenuItem textAlign={"center"} borderBottom={"1px solid black"}>
+                                <Link to={"/admin"} style={{ width: "100%", fontWeight: 500, fontSize: "larger" }}>Switch to Admin</Link>
+                            </MenuItem>}
                             <MenuItem textAlign={"center"} borderBottom={"1px solid black"}>
                                 <Link to={"/myquestions"} style={{ width: "100%", fontWeight: 500, fontSize: "larger" }}>My Questions</Link>
                             </MenuItem>
