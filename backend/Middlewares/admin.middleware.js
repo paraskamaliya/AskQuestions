@@ -9,12 +9,11 @@ const admin = async (req, res, next) => {
                 if (err) {
                     res.status(202).send({ err: err.message });
                 } else {
-                    if (decoded.role.includes("admin") == true) {
-                        next();
+                    if (!decoded.role.includes("admin")) {
+                        return res.status(401).send({ "msg": "You are not authorized" })
                     }
-                    else {
-                        res.status(300).send({ "msg": "You are not authorized" })
-                    }
+                    req.user = decoded;
+                    next();
                 }
             });
         } else {
