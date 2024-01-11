@@ -32,14 +32,14 @@ const AdminHome = () => {
     }
 
     const handleAdminUpdate = async (data) => {
-        data = { ...data, roles: [...data.roles, "admin"] };
         try {
             let res = await fetch(`${URL}/admin/updateuser/${data._id}`, {
                 method: "PATCH",
                 headers: {
-                    "Authorization": `Bearer ${auth.token.split('"')[0]}`
+                    "Authorization": `Bearer ${auth.token.split('"')[0]}`,
+                    "content-type": "application/json"
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify({ ...data, roles: [...data.roles, "admin"] })
             })
             if (res.status == 200) {
                 let updated = userData.map((el) => {
@@ -67,7 +67,7 @@ const AdminHome = () => {
             <Heading color={"green"} textAlign={"center"}>Welcome Admin</Heading>
             <Stack display={"grid"} gridTemplateColumns={["repeat(2,1fr)", "repeat(2,1fr)", "repeat(3,1fr)", "repeat(3,1fr)", "repeat(3,1fr)"]}>
                 {userData.length > 0 && userData.map((el) => {
-                    return <motion.div style={{ margin: "2%", borderRadius: "25px", padding: "2%", color: "black", background: "#ffffffb5" }} key={el._id} whileHover={{ boxShadow: "2px 2px 4px black", transition: { duration: 0.5 } }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+                    return <motion.div style={{ margin: "2%", borderRadius: "25px", padding: "2%", color: "black", background: "#ffffffb5", height: "fit-content" }} key={el._id} whileHover={{ boxShadow: "2px 2px 4px black", transition: { duration: 0.5 } }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
                         <Link to={`/userinfo/${el._id}`}>
                             <div>
                                 <div style={{ display: "flex", alignItems: "center", gap: "4%" }}>
