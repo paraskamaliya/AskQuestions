@@ -19,7 +19,7 @@ adminRoute.get("/user/:id", async (req, res) => {
     try {
         let user = await UserModel.findOne({ _id: id })
         let posts = await PostModel.find({ userId: id })
-        res.status(200).send(posts);
+        res.status(200).send({ "userDetails": user, "postDetails": posts });
     } catch (error) {
         res.status(400).send({ "msg": "Something went wrong", "err": error })
     }
