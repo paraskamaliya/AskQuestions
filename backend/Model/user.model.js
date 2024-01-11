@@ -3,7 +3,8 @@ const userSchema = mongoose.Schema({
     username: String,
     email: String,
     password: String,
-    country: String
+    country: String,
+    roles: Array
 }, {
     versionKey: false
 })
