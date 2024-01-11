@@ -5,10 +5,12 @@ const cors = require('cors')
 const mongoose = require("mongoose");
 const { userRouter } = require('./Router/user.router')
 const { postRouter } = require('./Router/post.router')
+const { adminRoute } = require('./Router/admin.router')
 app.use(express.json());
 app.use(cors());
 app.use("/users", userRouter)
 app.use("/posts", postRouter)
+app.use("/admin", adminRoute)
 app.get("/", (req, res) => {
     res.send("Welcome to AskQuestions")
 })
