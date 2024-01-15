@@ -69,6 +69,7 @@ const Home = () => {
 
     useEffect(() => {
         fetchTheData();
+        document.title = "Home Page | AskQuestions"
     }, [type, order, page])
     if (load) {
         return <motion.div style={{ height: "90vh", display: "flex", alignItems: "center", justifyContent: "center", background: "rgb(200, 180, 240)" }} >

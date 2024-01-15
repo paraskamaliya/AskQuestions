@@ -44,6 +44,7 @@ const MyProfile = () => {
     }
     useEffect(() => {
         setUserData(auth.user);
+        document.title = [auth.user.username]
     }, [])
 
     return <div style={{ background: "rgb(200, 180, 240)", minHeight: "90vh" }} >

@@ -54,6 +54,7 @@ const AdminHome = () => {
 
     useEffect(() => {
         fetchTheData();
+        document.title = "Admin | AskQuestions"
     }, [])
 
     if (load) {

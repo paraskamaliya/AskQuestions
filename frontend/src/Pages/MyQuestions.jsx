@@ -108,6 +108,7 @@ const MyQuestions = () => {
 
     useEffect(() => {
         fetchUserQuestions();
+        document.title = "My Questions | AskQuestions"
     }, [])
 
     if (load) {

@@ -1,6 +1,6 @@
 import { Input, Select, Textarea, useToast } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 const AddQuestion = () => {
     const URL = "https://askquestions.onrender.com";
@@ -51,6 +51,10 @@ const AddQuestion = () => {
             })
         }
     }
+
+    useEffect(() => {
+        document.title = "Add Question | AskQuestions"
+    }, [])
 
     return <div style={{ height: "90vh", background: "rgb(200, 180, 240)" }}>
         <motion.div style={{ width: "40%", margin: "auto", textAlign: "center", paddingTop: "4%" }}>

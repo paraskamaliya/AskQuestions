@@ -174,6 +174,7 @@ const SingleQuestion = () => {
 
     useEffect(() => {
         fetchTheData();
+        document.title = "Question Page | AskQuestions"
     }, [id])
     if (load) {
         return <motion.div style={{ height: "90vh", display: "flex", alignItems: "center", justifyContent: "center", background: "rgb(200, 180, 240)" }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} >

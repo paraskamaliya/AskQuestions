@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { IoPersonSharp } from "react-icons/io5";
 import { Box, IconButton, Input, InputGroup, InputRightElement, Select, Spinner, useToast } from "@chakra-ui/react";
@@ -195,6 +195,9 @@ const Login = () => {
             scale: 0.8
         }
     }
+    useEffect(() => {
+        document.title = "Login Page | AskQuestions"
+    }, [])
     return <DIV>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ width: "100%", display: "flex", alignSelf: "center", justifySelf: "center", height: "100%" }} transition={{ delay: 0.5 }} exit={{ opacity: 0, transition: { duration: 0.5 } }}>
             {
